@@ -1,0 +1,56 @@
+准备数据:
+        将原始数据划分成X Y 相当于打上标签
+        建立CSVdataset(Dataset) 加上split() 方法用于划分训练数据和测试数据
+        def prepare_data(path)
+         train,test = .split()
+         train_dl = Dataloader(train, batchsize shuffle)
+         test_dl
+定义模型:
+       class your_model(Moudle):
+            def __init__(self, input_feature):
+             super.__init__()
+             self.hidden1 = Linear(input_feature,10)
+             kaiming_uniform_(self.hidden1.weight, nonlinearity = 'relu')
+             self.act1 = ReLU()
+            
+            def forward(self,X):
+             X = self.hidden1(X)
+             X = self.act1(X)
+             ...
+             ...
+             return X 
+训练模型:
+        def train_model(train_dl, model,epochs=100):
+            optimizer = SGD(model.parameters(),lr = 0.01,momentum= 0.9)
+            criterion = BCELoss()
+            losses = []
+            for epoch in epochs:
+                running_loss = 0.0
+                for i, (inputs,targets) in enumerate(train_dl):
+                    optimizer.zero_grad()
+                    yhat = model(inputs)
+                    loss = criterion(yhat, targets)  #注意参数顺序
+                loss.backward()
+                optimizer.step()
+                running_loss += loss.item()
+
+评估模型：
+        def evaluate_model(test_dl, model):
+            predictions, actuals = list(), list()
+            for i,(inputs,targets) in enumerate(test_dl):
+                yhat = model(inputs)
+                yhat = yhat.detach().cpu().numpy()
+                actual = targets.cpu().numpy()
+                actual = actual.reshape((len(actual), 1))
+                yhat = yhat.round()
+                predictions.append(yhat)
+                actuals.append(actual)
+            predictions, actuals = np.vstack(predictions), np.vstack(actuals)
+            acc = accuracy_score(actuals, predictions) #注意参数顺序
+            return acc
+做出预测：
+        def predict(row, model):
+        row = Tensor([row])
+        yhat = model(row)
+        yhat = yhat.detach().cpu().numpy()
+        return yhat
