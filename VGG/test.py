@@ -35,7 +35,7 @@ def test(model,test_dl):
 
 if __name__ == '__main__':
     model= VGG()
-    model.load_state_dict(torch.load('./LeNet5-20.pth'))
+    model.load_state_dict(torch.load('./VGG-20.pth'))
     test_dl = prepare_data()
     test(model, test_dl)
 

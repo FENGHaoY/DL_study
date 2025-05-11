@@ -16,6 +16,10 @@ def prepare_data():
     val_dl = Data.DataLoader(val_data,batch_size=12,shuffle=True)
     return train_dl, val_dl
 
+def to_scalar(value):
+    if isinstance(value, torch.Tensor):
+        return value.cpu().item()
+    return value
 
 def train(model, train_dl, val_dl, epochs):
     device = torch.device('cuda')
@@ -79,7 +83,7 @@ def train(model, train_dl, val_dl, epochs):
             best_weights=copy.deepcopy(model.state_dict())
     
     model.load_state_dict(best_weights)
-    torch.save(best_weights,f'./LeNet5-{epochs}.pth')
+    torch.save(best_weights,f'./VGG-{epochs}.pth')
     train_df = pd.DataFrame(data={
         'epochs':range(1,epochs+1),
         'train_loss':train_loss,
@@ -93,15 +97,15 @@ def train(model, train_dl, val_dl, epochs):
 def plot_acc_loss(train_df):
     plt.figure(figsize=(12,4))
     plt.subplot(1,2,1)
-    plt.plot(train_df['epochs'], train_df['train_loss'], 'ro-', label='train_loss')
-    plt.plot(train_df['epochs'], train_df['val_loss'], 'bs-', label='val_loss')
+    plt.plot(train_df['epochs'].to_numpy(), train_df['train_loss'].to_numpy(), 'ro-', label='train_loss')
+    plt.plot(train_df['epochs'].to_numpy(), train_df['val_loss'].to_numpy(), 'bs-', label='val_loss')
     plt.legend()
     plt.xlabel('epoch')
     plt.ylabel('loss')
 
     plt.subplot(1,2,2)
-    plt.plot(train_df['epochs'], train_df['train_acc'], 'ro-', label='train_acc')
-    plt.plot(train_df['epochs'], train_df['val_acc'], 'bs-', label='val_acc')
+    plt.plot(train_df['epochs'].to_numpy(), train_df['train_acc'].to_numpy(), 'ro-', label='train_acc')
+    plt.plot(train_df['epochs'].to_numpy(), train_df['val_acc'].to_numpy(), 'bs-', label='val_acc')
     plt.legend()
     plt.xlabel('epoch')
     plt.ylabel('acc')

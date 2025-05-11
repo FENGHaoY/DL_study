@@ -48,11 +48,11 @@ class VGG(nn.Module):
         )
         self.block6 = nn.Sequential(
             nn.Flatten(),
-            nn.Linear(7*7*512,4096),
+            nn.Linear(7*7*512,256),
             nn.ReLU(),
-            nn.Linear(4096,4096),
+            nn.Linear(256,128),
             nn.ReLU(),
-            nn.Linear(4096,10),
+            nn.Linear(128,10),
             nn.ReLU()
         )
         #必须初始化 不然效果不稳定并且效果很差
