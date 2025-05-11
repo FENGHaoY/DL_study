@@ -105,7 +105,7 @@ def plot_acc_loss(train_df):
     plt.legend()
     plt.xlabel('epoch')
     plt.ylabel('acc')
-    plt.savefig('./image/train-10.png')
+    plt.savefig('./image/train.png')
     plt.show()
 
 if __name__ == '__main__':
