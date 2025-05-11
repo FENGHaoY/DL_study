@@ -93,25 +93,25 @@ def train(model, train_dl, val_dl, epochs):
 def plot_acc_loss(train_df):
     plt.figure(figsize=(12,4))
     plt.subplot(1,2,1)
-    plt.plot(train_df['epochs'], train_df['train_loss'], 'ro-', label='train_loss')
-    plt.plot(train_df['epochs'], train_df['val_loss'], 'bs-', label='val_loss')
+    plt.plot(train_df['epochs'].to_numpy(), train_df['train_loss'].to_numpy(), 'ro-', label='train_loss')
+    plt.plot(train_df['epochs'].to_numpy(), train_df['val_loss'].to_numpy(), 'bs-', label='val_loss')
     plt.legend()
     plt.xlabel('epoch')
     plt.ylabel('loss')
 
     plt.subplot(1,2,2)
-    plt.plot(train_df['epochs'], train_df['train_acc'], 'ro-', label='train_acc')
-    plt.plot(train_df['epochs'], train_df['val_acc'], 'bs-', label='val_acc')
+    plt.plot(train_df['epochs'].to_numpy(), train_df['train_acc'].to_numpy(), 'ro-', label='train_acc')
+    plt.plot(train_df['epochs'].to_numpy(), train_df['val_acc'].to_numpy(), 'bs-', label='val_acc')
     plt.legend()
     plt.xlabel('epoch')
     plt.ylabel('acc')
-    plt.savefig('./image/train.png')
+    plt.savefig('./image/train2.png')
     plt.show()
 
 if __name__ == '__main__':
     leNet = LeNet()
     train_dl,val_dl = prepare_data()
-    epochs = 20
+    epochs = 2
     train_df = train(leNet,train_dl,val_dl,epochs)
     plot_acc_loss(train_df)
 
