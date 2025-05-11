@@ -54,7 +54,7 @@ def train(model, train_dl, val_dl, epochs):
             loss.backward()
             optimizer.step()
             train_running_loss += loss.item() * x.size(0)
-            train_running_acc += torch.sum(res == y.detach())#加速操作 把y的计算图分离
+            train_running_acc += torch.sum(res == y.detach()).item()#加速操作 把y的计算图分离
             train_num += x.size(0)
         #每一轮训练完成接着进行验证：（简单来说就是只求loss和acc 不更新参数）
         for step,(x,y) in enumerate(val_dl):
@@ -65,7 +65,7 @@ def train(model, train_dl, val_dl, epochs):
             res = torch.argmax(output, dim=1)
             loss = criterion(output, y)
             val_running_loss += loss.item() * x.size(0)
-            val_running_acc += torch.sum(res == y.detach())
+            val_running_acc += torch.sum(res == y.detach()).item()
             val_num += x.size(0)
         
         train_loss.append(train_running_loss / train_num)
@@ -105,7 +105,7 @@ def plot_acc_loss(train_df):
     plt.legend()
     plt.xlabel('epoch')
     plt.ylabel('acc')
-    plt.savefig('./image/train.png')
+    plt.savefig('./image/train-10.png')
     plt.show()
 
 if __name__ == '__main__':

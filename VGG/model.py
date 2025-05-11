@@ -55,6 +55,16 @@ class VGG(nn.Module):
             nn.Linear(4096,10),
             nn.ReLU()
         )
+        #必须初始化 不然效果不稳定并且效果很差
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_uniform_(m.weight,nonlinearity='relu')
+                if m.bias is not None:
+                    nn.init.constant_(m.bias,0)
+            elif isinstance(m, nn.Linear):
+                nn.init.normal_(m.weight,mean=0,std=0.01)
+                if m.bias is not None:
+                    nn.init.constant_(m.bias,0)
     
     def forward(self,x):
         x = self.block1(x)
