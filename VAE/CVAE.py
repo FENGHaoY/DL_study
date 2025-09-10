@@ -22,7 +22,7 @@ class CVAE(nn.Module):
             nn.Sigmoid()
         )
     
-    def reparameter(self, mean, log_var):#重参数化，一种数学方式 我不懂。。
+    def reparameter(self, mean, log_var):#重参数化生成z_noise，一种数学方式 我不懂。。
         noise = torch.randn_like(mean)
         z = mean + torch.exp(log_var*0.5)*noise
         return z
@@ -32,8 +32,8 @@ class CVAE(nn.Module):
         x = self.encode(x)
         mean = self.f1(x)
         log_var = self.f2(x)
-        z = self.reparameter(mean, log_var)
-        z = torch.concat((z, label), dim=1)
+        z = self.reparameter(mean, log_var)#生成noise的方式
+        z = torch.concat((z, label), dim=1)#拼接label
         res = self.decode(z)
         return res, mean, log_var
     
